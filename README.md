@@ -68,3 +68,9 @@ Do th same thing as MoveTentacle but for the head
 
 ## MovePiece
 After receiving the list of pieces he can move, the player select each one of them he wants to move and the position that he wants it to go. Depending of the piece it calls the move to the head or the respective tentacle
+
+## PrintBoard
+Print in the terminal the current state of the board
+
+## Play
+The main function of the project that will call the other methods in order to make the game works
