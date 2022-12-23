@@ -55,6 +55,22 @@ replace(N, 0, [H|T], Result):- append([N], T, Result).
 replace(N, Index, [H|T], Result):- Index1 is Index-1,
 											replace(N, Index1, T, X),
 											append([H], X, Result). 
+
+
+
+
+valid_move(-1, Y1, X2, Y2, Board, Player, 0):- write('Illegal coordinates'), nl.
+valid_move(X1, -1, X2, Y2, Board, Player, 0):- write('Illegal coordinates'), nl.
+valid_move(X1, Y1, -1, Y2, Board, Player, 0):- write('Illegal coordinates'), nl.
+valid_move(X1, Y1, X2, -1, Board, Player, 0):- write('Illegal coordinates'), nl.
+valid_move(X1, Y1, X2, Y2, Board, Player, R):- 
+						nth0(Y1, Board, Row2),
+						nth0(X1, Row2, Cell2),
+						(Cell2 \= 0 -> R is 0, write('Destination square occupied'),nl;
+							nth0(Y2, Board, Row1),
+							nth0(X2, Row1, Cell1),
+							(Cell1 = 0 -> R is 0, write('Starting square is empty'), nl;
+							R is 1)).
 											
 player_move(Movefrom_x, Movefrom_y, Moveto_x, Moveto_y, Board, Player, Result):-
 						translate_input_x(Moveto_x, X1), 
@@ -62,10 +78,11 @@ player_move(Movefrom_x, Movefrom_y, Moveto_x, Moveto_y, Board, Player, Result):-
 						translate_input_x(Movefrom_x, X2), 
 						translate_input_y(Movefrom_y, Y2), 
 						
-						X1 > -1, 
-						X2 > -1, 
-						Y1 > -1, 
-						Y2 > -1,
+						valid_move(X1, Y1, X2, Y2, Board, Player, R),
+						(R = 0 -> write('Redo your move'),nl,nl;
+						nth0(Y2, Board, Row1),
+						nth0(X2, Row1, Cell1),
+						Cell1 \= 0, 
 						
 						nth0(Y1, Board, Row2),
 						nth0(X1, Row2, Cell2),
@@ -87,7 +104,7 @@ player_move(Movefrom_x, Movefrom_y, Moveto_x, Moveto_y, Board, Player, Result):-
 							(Player = 2 -> player_move_head(X1, Y1, X2, Y2, Cell1, Board, Result);
 							write('You can\'t move other players\' pieces!'), nl, Result is 0);
 						  write('Illegal value in cell'), nl, Result is 0
-						).
+						)).
 
 player_move_tentacle(X1, Y1, X2, Y2, Char, Board, Result):- 
 																		  nth0(Y1, Board, Row1),
@@ -116,7 +133,6 @@ play(Player, Board):- print_board(Board, 8),nl,
 									   write('Y coordinate of where you want to move.'), nl,
 									   get_char(Y2), skip_line, nl,
 									   write(X1),write(Y1),write(X2),write(Y2),nl,
-									   
 									   player_move(X1, Y1, X2, Y2, Board, Player, Result),
 									   (Result = 0 -> play(Player, Board);
 									   nextplayer(Player, NP),
