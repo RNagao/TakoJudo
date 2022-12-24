@@ -56,6 +56,22 @@ replace(N, Index, [H|T], Result):- Index1 is Index-1,
 											replace(N, Index1, T, X),
 											append([H], X, Result). 
 
+column([], _, []).
+column(I, [X|Xs], [Y|Ys]) :-
+		nth0(I, X, Y),
+		column(I, Xs, Ys).
+
+		
+																		  
+nextplayer(1, 2).
+nextplayer(2, 1).
+
+
+
+
+/*	I'm not satisfied of the code below because I don't think it's the intended way of coding in Prolog.
+It will probably have to be changed. */
+
 
 
 
@@ -113,14 +129,13 @@ player_move_tentacle(X1, Y1, X2, Y2, Char, Board, Result):-
 																		  
 																		  nth0(Y2, Result1, Row2),
 																		  replace(0, X2, Row2, R2),
-																		  replace(R2, Y2, Result1, Result). 
+																		  replace(R2, Y2, Result1, Result).  
 
 
-nextplayer(1, 2).
-nextplayer(2, 1).
 
 playStart:- init_board(X),
 				play(1,X).
+				
 
 play(Player, Board):- print_board(Board, 8),nl,
 									   write('Player '),write(Player),write('\'s turn.'),nl,
@@ -133,6 +148,7 @@ play(Player, Board):- print_board(Board, 8),nl,
 									   write('Y coordinate of where you want to move.'), nl,
 									   get_char(Y2), skip_line, nl,
 									   write(X1),write(Y1),write(X2),write(Y2),nl,
+									   
 									   player_move(X1, Y1, X2, Y2, Board, Player, Result),
 									   (Result = 0 -> play(Player, Board);
 									   nextplayer(Player, NP),
