@@ -75,6 +75,29 @@ column(I, [X|Xs], [Y|Ys]) :-
 			nth0(I, X, Y),
 			column(I, Xs, Ys).
 
+right_diagonal(_, _, [], _, _).
+right_diagonal(X, Y, [H|T], Level, [R|Rs]):-
+			Sum is X+Y,
+			Index is Sum-Level,
+			Level1 is Level+1,
+			(Index > -1, Index < 8 -> 
+				nth0(Index, H, R),
+				right_diagonal(X, Y, T, Level1, Rs);
+			right_diagonal(X, Y, T, Level1, Rs)
+			).
+
+left_diagonal(_, _, [], _, _).
+left_diagonal(X, Y, [H|T], Level, [R|Rs]):-
+			Difference is X-Y,
+			Index is Difference+Level,
+			Level1 is Level+1,
+			(Index > -1, Index < 8 -> 
+				nth0(Index, H, R),
+				left_diagonal(X, Y, T, Level1, Rs);
+			left_diagonal(X, Y, T, Level1, Rs)
+			).
+
+
 								  
 nextplayer(1, 2).
 nextplayer(2, 1).
