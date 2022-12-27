@@ -414,6 +414,18 @@ free_movement_list(cell(Xa,Ya,Value,Xb,Yb,LeftD,RightD,Index), cell(Xa2,Ya2,Valu
             free_inbetween_space(Index2, Index, Rs, R2),
             left_or_right(R1, R2, R).
 
+get_all_player_pieces(_, [], []).
+get_all_player_pieces(Player, [cell(Xa,Ya,Player,Xb,Yb,LeftD,RightD, Index)|T], [cell(Xa,Ya,Player,Xb,Yb,LeftD,RightD,Index)|Rs]):-
+            get_all_player_pieces(Player, T, Rs).
+get_all_player_pieces(Player, [cell(_,_,_,_,_,_,_, _)|T], R):-
+            get_all_player_pieces(Player, T, R).
+
+test_piece(Piece, Board, Player, Results):-
+            findall(Piece, can_move(Piece, Cell2, Board, Player, 1), Results).
+valid_movements(Player, Board, Results):-
+            get_all_player_pieces(Player, Board, [H|T]),
+            test_piece(H, Board, Player, Results).
+
 play:-      
             init_board(X),
 	        playing(1,X).
