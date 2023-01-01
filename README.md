@@ -2,7 +2,7 @@
 
 ## Identification of the Work and Group
 This project implements the TakoJudo board game in Prolog language.
-The elements of the group are Munteanu Nicolae (202202842) and Raphael Nagao (X).
+The elements of the group are Munteanu Nicolae (X) and Raphael Nagao (X).
 Each of the team members contributed to 50% of the total work.
 
 ## Installation and Execution
